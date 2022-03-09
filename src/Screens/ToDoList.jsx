@@ -24,7 +24,7 @@ export default function ToDoList() {
     }
   }
 
-  const handleRemoveItem = (tarefa) => {
+  const handleRemoveTarefa = (tarefa) => {
     let novasTarefas = [...listaTarefas];
     novasTarefas.splice(listaTarefas.indexOf(tarefa), 1);
     setListaTarefas(novasTarefas);
@@ -67,7 +67,7 @@ export default function ToDoList() {
               <IconButton>
                 <DeleteIcon
                   onClick={() => {
-                    handleRemoveItem(item);
+                    handleRemoveTarefa(item);
                   }}
                   sx={{
                     color: "#0A1929"
