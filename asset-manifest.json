@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/%3CToDoList---ReactJS%3E/static/js/main.733df381.js",
+    "static/js/787.34d05ddd.chunk.js": "/%3CToDoList---ReactJS%3E/static/js/787.34d05ddd.chunk.js",
+    "index.html": "/%3CToDoList---ReactJS%3E/index.html",
+    "main.733df381.js.map": "/%3CToDoList---ReactJS%3E/static/js/main.733df381.js.map",
+    "787.34d05ddd.chunk.js.map": "/%3CToDoList---ReactJS%3E/static/js/787.34d05ddd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.733df381.js"
+  ]
+}
