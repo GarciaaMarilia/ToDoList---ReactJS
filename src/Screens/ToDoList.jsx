@@ -1,83 +1,137 @@
-import * as React from "react";
-import { Container, TextField, Typography } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import React, { useState } from "react";
+import {
+ Container,
+ Row,
+ Col,
+ FormControl,
+ InputGroup,
+ Button,
+ ListGroup,
+} from "react-bootstrap";
+import { BsPlusCircle } from "react-icons/bs";
 
 export default function ToDoList() {
-  const [tarefa, setTarefa] = React.useState("");
-  const [listaTarefas, setListaTarefas] = React.useState([]);
+ const [tarefa, setTarefa] = useState("");
+ const [listaTarefas, setListaTarefas] = useState([]);
+ const [checkedTasks, setCheckedTasks] = useState([]);
 
-  function handleTarefa(event) {
-    let inputTarefa = event.target.value;
+ function handleTarefa(event) {
+  let inputTarefa = event.target.value;
+  setTarefa(inputTarefa);
+ }
 
-    setTarefa(inputTarefa);
+ function handleAdicionarTarefa(event) {
+  event.preventDefault();
+  if (tarefa) {
+   setListaTarefas([...listaTarefas, tarefa]);
+   setTarefa("");
   }
+ }
 
-  function handleAdicionarTarefa(event) {
-    event.preventDefault();
+ const handleRemoveTarefa = (tarefa) => {
+  let novasTarefas = [...listaTarefas];
+  novasTarefas = novasTarefas.filter((item) => item !== tarefa);
+  setListaTarefas(novasTarefas);
+  setCheckedTasks(checkedTasks.filter((item) => item !== tarefa));
+ };
 
-    if (tarefa) {
-      setListaTarefas([...listaTarefas, tarefa]);
+ const handleCheckTarefa = (tarefa) => {
+  const novasTarefas = [...checkedTasks, tarefa];
+  setCheckedTasks(novasTarefas);
+ };
 
-      setTarefa("");
-    }
-  }
-
-  const handleRemoveTarefa = (tarefa) => {
-    let novasTarefas = [...listaTarefas];
-    novasTarefas.splice(listaTarefas.indexOf(tarefa), 1);
-    setListaTarefas(novasTarefas);
-  };
-
-  return (
-    <React.Fragment>
-      <Typography
-        variant="h4"
-        sx={{ flexGrow: 1 }}
-        align="center"
-        fontSize="60px"
-        marginTop="80px"
-        color="#0A1929"
-      >
-        ToDoList
-      </Typography>
-      <Container style={{ maxWidth: "22%", marginTop: 60 }}>
-        <TextField
-          id="outlined-basic"
-          label="Atividade"
-          variant="outlined"
-          type="text"
-          value={tarefa}
-          onChange={handleTarefa}
-          style={{ marginTop: 8 }}
-        />
-        <IconButton onClick={handleAdicionarTarefa}>
-          <AddCircleRoundedIcon
-            sx={{
-              fontSize: "46px",
-              color: "#0A1929"
-            }}
-          />
-        </IconButton>
-        <ul>
-          {listaTarefas.map((item) => (
-            <li>
-              {item}
-              <IconButton>
-                <DeleteIcon
-                  onClick={() => {
-                    handleRemoveTarefa(item);
-                  }}
-                  sx={{
-                    color: "#0A1929"
-                  }}
-                />
-              </IconButton>
-            </li>
-          ))}
-        </ul>
-      </Container>
-    </React.Fragment>
-  );
+ return (
+  <Container
+   style={{
+    maxWidth: "100%",
+    minHeight: "100vh",
+    padding: "80px",
+    backgroundColor: "#2c2c2c",
+    flex: 1,
+   }}
+  >
+   <Container style={{ textAlign: "center" }}>
+    <img
+     src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
+     alt="Check"
+     width="60"
+    />
+   </Container>
+   <h1 className="text-center" style={{ fontSize: "60px", color: "#fff" }}>
+    Tasks
+   </h1>
+   <InputGroup className="mb-3">
+    <FormControl
+     placeholder="Task"
+     aria-label="Atividade"
+     aria-describedby="basic-addon2"
+     value={tarefa}
+     onChange={handleTarefa}
+    />
+    <Button
+     variant="btn btn-outline-secondary"
+     onClick={handleAdicionarTarefa}
+     style={{ backgroundColor: "#fff", border: "none" }}
+    >
+     <BsPlusCircle size={30} style={{ color: "#2c2c2c" }} />
+    </Button>
+   </InputGroup>
+   <Row>
+    <Col>
+     <ListGroup>
+      {listaTarefas.map((item, index) => (
+       <ListGroup.Item
+        key={index}
+        className="d-flex justify-content-between align-items-center"
+        style={{
+         marginBottom: "10px",
+        }}
+       >
+        {item}
+        <Row>
+         <Col>
+          <Button
+           variant="btn btn-danger"
+           onClick={() => handleRemoveTarefa(item)}
+          >
+           Delete
+          </Button>
+         </Col>
+         <Col>
+          <Button
+           variant="btn btn-success"
+           onClick={() => handleCheckTarefa(item)}
+          >
+           Checked
+          </Button>
+         </Col>
+        </Row>
+       </ListGroup.Item>
+      ))}
+     </ListGroup>
+    </Col>
+    <Col>
+     <ListGroup>
+      {checkedTasks.map((item, index) => (
+       <ListGroup.Item
+        key={index}
+        className="d-flex justify-content-between align-items-center"
+        style={{
+         marginBottom: "10px",
+        }}
+       >
+        {item}
+        <Button
+         variant="btn btn-danger"
+         onClick={() => handleRemoveTarefa(item)}
+        >
+         Delete
+        </Button>
+       </ListGroup.Item>
+      ))}
+     </ListGroup>
+    </Col>
+   </Row>
+  </Container>
+ );
 }
