@@ -29,8 +29,8 @@ export default function ToDoList() {
  }
 
  const handleRemoveTask = (taskToDelete) => {
-  const tasksAux = tasksAux.filter((item) => item !== taskToDelete);
-  setTasks(tasksAux);
+  const updatedTasks = tasks.filter((item) => item !== taskToDelete);
+  setTasks(updatedTasks);
  };
 
  const handleCheckTask = (taskInput) => {
