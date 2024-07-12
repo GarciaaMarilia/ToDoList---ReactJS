@@ -11,33 +11,33 @@ import {
 import { BsPlusCircle } from "react-icons/bs";
 
 export default function ToDoList() {
- const [tarefa, setTarefa] = useState("");
- const [listaTarefas, setListaTarefas] = useState([]);
+ const [tasks, setTasks] = useState([]);
+ const [taskInput, setTaskInput] = useState("");
  const [checkedTasks, setCheckedTasks] = useState([]);
 
- function handleTarefa(event) {
+ function handleTask(event) {
   let inputTarefa = event.target.value;
-  setTarefa(inputTarefa);
+  setTaskInput(inputTarefa);
  }
 
- function handleAdicionarTarefa(event) {
+ function handleAddTask(event) {
   event.preventDefault();
-  if (tarefa) {
-   setListaTarefas([...listaTarefas, tarefa]);
-   setTarefa("");
+  if (taskInput) {
+   setTasks([...tasks, taskInput]);
+   setTaskInput("");
   }
  }
 
- const handleRemoveTarefa = (tarefa) => {
-  let novasTarefas = [...listaTarefas];
-  novasTarefas = novasTarefas.filter((item) => item !== tarefa);
-  setListaTarefas(novasTarefas);
-  setCheckedTasks(checkedTasks.filter((item) => item !== tarefa));
+ const handleRemoveTask = (taskToDelete) => {
+  const tasksAux = tasksAux.filter((item) => item !== taskToDelete);
+  setTasks(tasksAux);
  };
 
- const handleCheckTarefa = (tarefa) => {
-  const novasTarefas = [...checkedTasks, tarefa];
-  setCheckedTasks(novasTarefas);
+ const handleCheckTask = (taskInput) => {
+  const checkedTasksAux = [...checkedTasks, taskInput];
+  const updatedTasks = tasks.filter((item) => item !== taskInput);
+  setTasks(updatedTasks);
+  setCheckedTasks(checkedTasksAux);
  };
 
  return (
@@ -60,17 +60,17 @@ export default function ToDoList() {
    <h1 className="text-center" style={{ fontSize: "60px", color: "#fff" }}>
     Tasks
    </h1>
-   <InputGroup className="mb-3">
+   <InputGroup className="mb-4">
     <FormControl
      placeholder="Task"
      aria-label="Atividade"
      aria-describedby="basic-addon2"
-     value={tarefa}
-     onChange={handleTarefa}
+     value={taskInput}
+     onChange={handleTask}
     />
     <Button
      variant="btn btn-outline-secondary"
-     onClick={handleAdicionarTarefa}
+     onClick={handleAddTask}
      style={{ backgroundColor: "#fff", border: "none" }}
     >
      <BsPlusCircle size={30} style={{ color: "#2c2c2c" }} />
@@ -79,7 +79,7 @@ export default function ToDoList() {
    <Row>
     <Col>
      <ListGroup>
-      {listaTarefas.map((item, index) => (
+      {tasks.map((item, index) => (
        <ListGroup.Item
         key={index}
         className="d-flex justify-content-between align-items-center"
@@ -92,7 +92,7 @@ export default function ToDoList() {
          <Col>
           <Button
            variant="btn btn-danger"
-           onClick={() => handleRemoveTarefa(item)}
+           onClick={() => handleRemoveTask(item)}
           >
            Delete
           </Button>
@@ -100,7 +100,7 @@ export default function ToDoList() {
          <Col>
           <Button
            variant="btn btn-success"
-           onClick={() => handleCheckTarefa(item)}
+           onClick={() => handleCheckTask(item)}
           >
            Checked
           </Button>
@@ -121,10 +121,7 @@ export default function ToDoList() {
         }}
        >
         {item}
-        <Button
-         variant="btn btn-danger"
-         onClick={() => handleRemoveTarefa(item)}
-        >
+        <Button variant="btn btn-danger" onClick={() => handleRemoveTask(item)}>
          Delete
         </Button>
        </ListGroup.Item>
