@@ -33,6 +33,10 @@ export default function ToDoList() {
  const handleRemoveTask = (taskToDelete) => {
   const updatedTasks = tasks.filter((item) => item !== taskToDelete);
   setTasks(updatedTasks);
+  const checkedUpdatedTasks = checkedTasks.filter(
+   (item) => item !== taskToDelete
+  );
+  setCheckedTasks(checkedUpdatedTasks);
  };
 
  const handleCheckTask = (taskInput) => {
