@@ -55,8 +55,8 @@ export default function ToDoList() {
      width="60"
     />
    </Container>
-   <h1 className="text-center text-size-custom text-white">Tasks</h1>
-   <InputGroup className="mb-4">
+   <h1 className="text-center text-size-custom text-white py-4">Tasks</h1>
+   <InputGroup className="mb-4 outlined-none">
     <FormControl
      placeholder="Task"
      aria-label="Atividade"
@@ -74,6 +74,8 @@ export default function ToDoList() {
    </InputGroup>
    <Row>
     <Col>
+     <h2 className="text-center fs-4 text-white">To Do</h2>
+
      <ListGroup>
       {tasks.map((item, index) => (
        <ListGroup.Item
@@ -104,6 +106,8 @@ export default function ToDoList() {
      </ListGroup>
     </Col>
     <Col>
+     <h1 className="text-center fs-4 text-white">Checked</h1>
+
      <ListGroup>
       {checkedTasks.map((item, index) => (
        <ListGroup.Item
