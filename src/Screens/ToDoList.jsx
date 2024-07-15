@@ -4,7 +4,6 @@ import {
  Row,
  Col,
  FormControl,
- InputGroup,
  Button,
  ListGroup,
 } from "react-bootstrap";
@@ -15,18 +14,25 @@ import "./styles.css";
 export default function ToDoList() {
  const [tasks, setTasks] = useState([]);
  const [taskInput, setTaskInput] = useState("");
+ const [descriptionInput, setDescriptionInput] = useState("");
  const [checkedTasks, setCheckedTasks] = useState([]);
 
- function handleTask(event) {
-  let inputTarefa = event.target.value;
-  setTaskInput(inputTarefa);
+ function handleTaskInput(event) {
+  let inputTask = event.target.value;
+  setTaskInput(inputTask);
+ }
+
+ function handleDescriptionInput(event) {
+  let inputDescription = event.target.value;
+  setDescriptionInput(inputDescription);
  }
 
  function handleAddTask(event) {
   event.preventDefault();
   if (taskInput) {
-   setTasks([...tasks, taskInput]);
+   setTasks([...tasks, { task: taskInput, description: descriptionInput }]);
    setTaskInput("");
+   setDescriptionInput("");
   }
  }
 
@@ -39,9 +45,9 @@ export default function ToDoList() {
   setCheckedTasks(checkedUpdatedTasks);
  };
 
- const handleCheckTask = (taskInput) => {
-  const checkedTasksAux = [...checkedTasks, taskInput];
-  const updatedTasks = tasks.filter((item) => item !== taskInput);
+ const handleCheckTask = (taskToCheck) => {
+  const checkedTasksAux = [...checkedTasks, taskToCheck];
+  const updatedTasks = tasks.filter((item) => item !== taskToCheck);
   setTasks(updatedTasks);
   setCheckedTasks(checkedTasksAux);
  };
@@ -56,47 +62,55 @@ export default function ToDoList() {
     />
    </Container>
    <h1 className="text-center text-size-custom text-white py-4">Tasks</h1>
-   <InputGroup className="mb-4 outlined-none">
+   <div className="input-container bg-dark-custom py-4 d-flex align-items-center h-100">
     <FormControl
      placeholder="Task"
-     aria-label="Atividade"
+     aria-label="Task"
      aria-describedby="basic-addon2"
      value={taskInput}
-     onChange={handleTask}
+     onChange={handleTaskInput}
+     className="me-2 bg-dark-custom text-white border-1"
+    />
+    <FormControl
+     placeholder="Description"
+     aria-label="Description"
+     aria-describedby="basic-addon2"
+     value={descriptionInput}
+     onChange={handleDescriptionInput}
+     className="me-1 bg-dark-custom text-white border-1 "
     />
     <Button
-     variant="btn btn-outline-secondary"
+     variant="success"
      onClick={handleAddTask}
-     className="bg-white border-0"
+     className="d-flex align-items-center border-0"
     >
-     <BsPlusCircle size={30} className="dark-custom" />
+     Add
+     <BsPlusCircle className="ms-2" size={20} />
     </Button>
-   </InputGroup>
+   </div>
    <Row>
     <Col>
-     <h2 className="text-center fs-4 text-white">To Do</h2>
-
      <ListGroup>
+      {tasks.length > 0 && (
+       <h2 className="text-center fs-4 text-white">To Do</h2>
+      )}
       {tasks.map((item, index) => (
        <ListGroup.Item
         key={index}
-        className="d-flex justify-content-between align-items-center mb-2"
+        className="d-flex justify-content-between align-items-center mb-2 bg-dark-custom text-white rounded"
        >
-        {item}
+        <div>
+         <div>{item.task}</div>
+         <div className="text-white">{item.description}</div>
+        </div>
         <Row>
          <Col>
-          <Button
-           variant="btn btn-danger"
-           onClick={() => handleRemoveTask(item)}
-          >
+          <Button variant="danger" onClick={() => handleRemoveTask(item)}>
            Delete
           </Button>
          </Col>
          <Col>
-          <Button
-           variant="btn btn-success"
-           onClick={() => handleCheckTask(item)}
-          >
+          <Button variant="success" onClick={() => handleCheckTask(item)}>
            Checked
           </Button>
          </Col>
@@ -106,16 +120,20 @@ export default function ToDoList() {
      </ListGroup>
     </Col>
     <Col>
-     <h1 className="text-center fs-4 text-white">Checked</h1>
-
      <ListGroup>
+      {checkedTasks.length > 0 && (
+       <h2 className="text-center fs-4 text-white">Checked</h2>
+      )}
       {checkedTasks.map((item, index) => (
        <ListGroup.Item
         key={index}
-        className="d-flex justify-content-between align-items-center mb-2"
+        className="d-flex justify-content-between align-items-center mb-2 bg-dark-custom text-white rounded"
        >
-        {item}
-        <Button variant="btn btn-danger" onClick={() => handleRemoveTask(item)}>
+        <div>
+         <div>{item.task}</div>
+         <div className="text-white">{item.description}</div>
+        </div>
+        <Button variant="danger" onClick={() => handleRemoveTask(item)}>
          Delete
         </Button>
        </ListGroup.Item>
