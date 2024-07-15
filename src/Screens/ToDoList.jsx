@@ -10,6 +10,8 @@ import {
 } from "react-bootstrap";
 import { BsPlusCircle } from "react-icons/bs";
 
+import "./styles.css";
+
 export default function ToDoList() {
  const [tasks, setTasks] = useState([]);
  const [taskInput, setTaskInput] = useState("");
@@ -41,25 +43,15 @@ export default function ToDoList() {
  };
 
  return (
-  <Container
-   style={{
-    maxWidth: "100%",
-    minHeight: "100vh",
-    padding: "80px",
-    backgroundColor: "#2c2c2c",
-    flex: 1,
-   }}
-  >
-   <Container style={{ textAlign: "center" }}>
+  <Container className="full-width full-height custom-padding bg-dark-custom d-flex flex-column">
+   <Container className="text-center">
     <img
      src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
      alt="Check"
      width="60"
     />
    </Container>
-   <h1 className="text-center" style={{ fontSize: "60px", color: "#fff" }}>
-    Tasks
-   </h1>
+   <h1 className="text-center text-size-custom text-white">Tasks</h1>
    <InputGroup className="mb-4">
     <FormControl
      placeholder="Task"
@@ -71,9 +63,9 @@ export default function ToDoList() {
     <Button
      variant="btn btn-outline-secondary"
      onClick={handleAddTask}
-     style={{ backgroundColor: "#fff", border: "none" }}
+     className="bg-white border-0"
     >
-     <BsPlusCircle size={30} style={{ color: "#2c2c2c" }} />
+     <BsPlusCircle size={30} className="dark-custom" />
     </Button>
    </InputGroup>
    <Row>
@@ -82,10 +74,7 @@ export default function ToDoList() {
       {tasks.map((item, index) => (
        <ListGroup.Item
         key={index}
-        className="d-flex justify-content-between align-items-center"
-        style={{
-         marginBottom: "10px",
-        }}
+        className="d-flex justify-content-between align-items-center mb-2"
        >
         {item}
         <Row>
@@ -115,10 +104,7 @@ export default function ToDoList() {
       {checkedTasks.map((item, index) => (
        <ListGroup.Item
         key={index}
-        className="d-flex justify-content-between align-items-center"
-        style={{
-         marginBottom: "10px",
-        }}
+        className="d-flex justify-content-between align-items-center mb-2"
        >
         {item}
         <Button variant="btn btn-danger" onClick={() => handleRemoveTask(item)}>
