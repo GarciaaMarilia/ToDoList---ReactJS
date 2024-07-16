@@ -1,13 +1,11 @@
 import React, { useState } from "react";
+import { Container, FormControl, Button, ListGroup } from "react-bootstrap";
 import {
- Container,
- Row,
- Col,
- FormControl,
- Button,
- ListGroup,
-} from "react-bootstrap";
-import { BsPlusCircle } from "react-icons/bs";
+ BsPlusCircle,
+ BsFillTrashFill,
+ BsCheckCircleFill,
+} from "react-icons/bs";
+import { LuUndo2 } from "react-icons/lu";
 
 import "./styles.css";
 
@@ -62,13 +60,14 @@ export default function ToDoList() {
     />
    </Container>
    <h1 className="text-center text-size-custom text-white py-4">Tasks</h1>
-   <div className="input-container bg-dark-custom py-4 d-flex align-items-center h-100">
+   <Container className="input-container bg-dark-custom py-4 d-flex align-items-center full-width">
     <FormControl
      placeholder="Task"
      aria-label="Task"
      aria-describedby="basic-addon2"
      value={taskInput}
      onChange={handleTaskInput}
+     maxLength={30}
      className="me-2 bg-dark-custom text-white border-1"
     />
     <FormControl
@@ -77,6 +76,7 @@ export default function ToDoList() {
      aria-describedby="basic-addon2"
      value={descriptionInput}
      onChange={handleDescriptionInput}
+     maxLength={30}
      className="me-1 bg-dark-custom text-white border-1 "
     />
     <Button
@@ -87,60 +87,74 @@ export default function ToDoList() {
      Add
      <BsPlusCircle className="ms-2" size={20} />
     </Button>
-   </div>
-   <Row>
-    <Col>
-     <ListGroup>
-      {tasks.length > 0 && (
-       <h2 className="text-center fs-4 text-white">To Do</h2>
-      )}
-      {tasks.map((item, index) => (
-       <ListGroup.Item
-        key={index}
-        className="d-flex justify-content-between align-items-center mb-2 bg-dark-custom text-white rounded"
-       >
-        <div>
-         <div>{item.task}</div>
-         <div className="text-white">{item.description}</div>
-        </div>
-        <Row>
-         <Col>
-          <Button variant="danger" onClick={() => handleRemoveTask(item)}>
-           Delete
-          </Button>
-         </Col>
-         <Col>
-          <Button variant="success" onClick={() => handleCheckTask(item)}>
-           Checked
-          </Button>
-         </Col>
-        </Row>
-       </ListGroup.Item>
-      ))}
-     </ListGroup>
-    </Col>
-    <Col>
-     <ListGroup>
-      {checkedTasks.length > 0 && (
-       <h2 className="text-center fs-4 text-white">Checked</h2>
-      )}
-      {checkedTasks.map((item, index) => (
-       <ListGroup.Item
-        key={index}
-        className="d-flex justify-content-between align-items-center mb-2 bg-dark-custom text-white rounded"
-       >
-        <div>
-         <div>{item.task}</div>
-         <div className="text-white">{item.description}</div>
-        </div>
-        <Button variant="danger" onClick={() => handleRemoveTask(item)}>
-         Delete
+   </Container>
+   <Container className="lists-container bg-dark-custom">
+    <ListGroup className="mb-4">
+     {tasks.length > 0 && (
+      <h2 className="text-center fs-4 text-white">To Do</h2>
+     )}
+     {tasks.map((item, index) => (
+      <ListGroup.Item
+       key={index}
+       className="d-flex justify-content-between align-items-center mb-2 bg-dark-custom text-white rounded border"
+      >
+       <Container className="px-0">
+        {item.task}
+        <br />
+        {item.description}
+       </Container>
+
+       <Container className="d-flex w-auto px-0">
+        <Button
+         className="me-2"
+         variant="danger"
+         onClick={() => handleRemoveTask(item)}
+        >
+         <BsFillTrashFill size={16} />
         </Button>
-       </ListGroup.Item>
-      ))}
-     </ListGroup>
-    </Col>
-   </Row>
+
+        <Button variant="success" onClick={() => handleCheckTask(item)}>
+         <BsCheckCircleFill size={16} />
+        </Button>
+       </Container>
+      </ListGroup.Item>
+     ))}
+    </ListGroup>
+
+    <ListGroup>
+     {checkedTasks.length > 0 && (
+      <h2 className="text-center fs-4 text-white">Checked</h2>
+     )}
+     {checkedTasks.map((item, index) => (
+      <ListGroup.Item
+       key={index}
+       className="d-flex justify-content-between align-items-center mb-2 bg-dark-custom text-white rounded border"
+      >
+       <Container className="px-0">
+        {item.task}
+        <br />
+        {item.description}
+       </Container>
+
+       <Container className="d-flex w-auto px-0">
+        <Button
+         className="me-2"
+         variant="danger"
+         onClick={() => handleRemoveTask(item)}
+        >
+         <BsFillTrashFill size={16} />
+        </Button>
+        <Button
+         variant="btn btn-warning"
+         //  onClick={() => handleRemoveTask(item)}
+        >
+         <LuUndo2 size={16} />
+        </Button>
+       </Container>
+      </ListGroup.Item>
+     ))}
+    </ListGroup>
+   </Container>
   </Container>
  );
 }
