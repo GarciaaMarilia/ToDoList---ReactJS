@@ -4,6 +4,7 @@ import {
  BsPlusCircle,
  BsFillTrashFill,
  BsCheckCircleFill,
+ BsClock,
 } from "react-icons/bs";
 import { LuUndo2 } from "react-icons/lu";
 
@@ -14,6 +15,7 @@ export default function ToDoList() {
  const [taskInput, setTaskInput] = useState("");
  const [descriptionInput, setDescriptionInput] = useState("");
  const [checkedTasks, setCheckedTasks] = useState([]);
+ const [timeInput, setTimeInput] = useState("");
 
  function handleTaskInput(event) {
   let inputTask = event.target.value;
@@ -25,12 +27,21 @@ export default function ToDoList() {
   setDescriptionInput(inputDescription);
  }
 
+ function handleTimeInput(event) {
+  let inputTime = event.target.value;
+  setTimeInput(inputTime);
+ }
+
  function handleAddTask(event) {
   event.preventDefault();
   if (taskInput) {
-   setTasks([...tasks, { task: taskInput, description: descriptionInput }]);
+   setTasks([
+    ...tasks,
+    { task: taskInput, description: descriptionInput, time: timeInput },
+   ]);
    setTaskInput("");
    setDescriptionInput("");
+   setTimeInput("");
   }
  }
 
@@ -60,33 +71,36 @@ export default function ToDoList() {
  };
 
  return (
-  <Container className="full-width full-height custom-padding bg-dark-custom d-flex flex-column">
-   <Container className="text-center">
-    <img
-     src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp"
-     alt="Check"
-     width="60"
-    />
-   </Container>
-   <h1 className="text-center text-size-custom text-white py-4">Tasks</h1>
-   <Container className="input-container bg-dark-custom py-4 d-flex align-items-center full-width">
+  <Container className="full-width full-height custom-padding bg-white d-flex flex-column">
+   <Container className="input-container py-4 d-flex align-items-center full-width">
     <FormControl
-     placeholder="Task"
+     required
+     maxLength={30}
      aria-label="Task"
-     aria-describedby="basic-addon2"
      value={taskInput}
+     placeholder="Task"
      onChange={handleTaskInput}
-     maxLength={30}
-     className="me-2 bg-dark-custom text-white border-1"
+     className="me-2  border-1"
+     validationState="error"
+     aria-describedby="basic-addon2"
     />
     <FormControl
-     placeholder="Description"
-     aria-label="Description"
-     aria-describedby="basic-addon2"
-     value={descriptionInput}
-     onChange={handleDescriptionInput}
      maxLength={30}
-     className="me-1 bg-dark-custom text-white border-1 "
+     aria-label="Description"
+     value={descriptionInput}
+     placeholder="Description"
+     className="me-2  border-1 "
+     aria-describedby="basic-addon2"
+     onChange={handleDescriptionInput}
+    />
+    <FormControl
+     type="time"
+     aria-label="Time"
+     value={timeInput}
+     placeholder="Time"
+     onChange={handleTimeInput}
+     className="me-2  border-1"
+     aria-describedby="basic-addon2"
     />
     <Button
      variant="success"
@@ -97,20 +111,30 @@ export default function ToDoList() {
      <BsPlusCircle className="ms-2" size={20} />
     </Button>
    </Container>
-   <Container className="lists-container bg-dark-custom">
+   <Container className="lists-container ">
+    <h2 className="mb-4 font-bold text-size-custom">
+     <strong>Today</strong>
+    </h2>
     <ListGroup className="mb-4">
      {tasks.length > 0 && (
-      <h2 className="text-center fs-4 text-white">To Do</h2>
+      <h2 className="fs-6">
+       <strong>To Do</strong>
+      </h2>
      )}
      {tasks.map((item, index) => (
       <ListGroup.Item
        key={index}
-       className="d-flex justify-content-between align-items-center mb-2 bg-dark-custom text-white rounded border"
+       className="d-flex justify-content-between align-items-center mb-2  rounded border"
       >
        <Container className="px-0">
         {item.task}
         <br />
         {item.description}
+
+        <div className="d-flex align-items-center text-secondary">
+         {item.time}
+         <BsClock size={15} className="ms-2" />
+        </div>
        </Container>
 
        <Container className="d-flex w-auto px-0">
@@ -132,17 +156,24 @@ export default function ToDoList() {
 
     <ListGroup>
      {checkedTasks.length > 0 && (
-      <h2 className="text-center fs-4 text-white">Checked</h2>
+      <h2 className="fs-6">
+       <strong>Done</strong>
+      </h2>
      )}
      {checkedTasks.map((item, index) => (
       <ListGroup.Item
        key={index}
-       className="d-flex justify-content-between align-items-center mb-2 bg-dark-custom text-white rounded border"
+       className="d-flex justify-content-between align-items-center mb-2  rounded border"
       >
        <Container className="px-0">
         {item.task}
         <br />
         {item.description}
+
+        <div className="d-flex align-items-center text-secondary">
+         {item.time}
+         <BsClock size={15} className="ms-2" />
+        </div>
        </Container>
 
        <Container className="d-flex w-auto px-0">
