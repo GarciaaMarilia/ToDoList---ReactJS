@@ -50,6 +50,15 @@ export default function ToDoList() {
   setCheckedTasks(checkedTasksAux);
  };
 
+ const handleUndoCheckedTask = (taskToUndo) => {
+  const tasksAux = [...tasks, taskToUndo];
+  const updatedCheckedTasks = checkedTasks.filter(
+   (item) => item !== taskToUndo
+  );
+  setTasks(tasksAux);
+  setCheckedTasks(updatedCheckedTasks);
+ };
+
  return (
   <Container className="full-width full-height custom-padding bg-dark-custom d-flex flex-column">
    <Container className="text-center">
@@ -146,7 +155,7 @@ export default function ToDoList() {
         </Button>
         <Button
          variant="btn btn-warning"
-         //  onClick={() => handleRemoveTask(item)}
+         onClick={() => handleUndoCheckedTask(item)}
         >
          <LuUndo2 size={16} />
         </Button>
