@@ -116,83 +116,89 @@ export default function ToDoList() {
      <strong>Today</strong>
     </h2>
     <ListGroup className="mb-4">
-     {tasks.length > 0 && (
-      <h2 className="fs-6">
-       <strong>To Do</strong>
-      </h2>
+     <h2 className="fs-6">
+      <strong>To Do</strong>
+     </h2>
+
+     {tasks.length > 0 ? (
+      tasks.map((item, index) => (
+       <ListGroup.Item
+        key={index}
+        className="d-flex justify-content-between align-items-center mb-2  rounded border"
+       >
+        <Container className="px-0">
+         {item.task}
+         <br />
+         {item.description}
+
+         <div className="d-flex align-items-center text-secondary">
+          {item.time}
+          <BsClock size={15} className="ms-2" />
+         </div>
+        </Container>
+
+        <Container className="d-flex w-auto px-0">
+         <Button
+          className="me-2"
+          variant="danger"
+          onClick={() => handleRemoveTask(item)}
+         >
+          <BsFillTrashFill size={16} />
+         </Button>
+
+         <Button variant="success" onClick={() => handleCheckTask(item)}>
+          <BsCheckCircleFill size={16} />
+         </Button>
+        </Container>
+       </ListGroup.Item>
+      ))
+     ) : (
+      <p className="centered-gray-text">You don't have any tasks to do yet.</p>
      )}
-     {tasks.map((item, index) => (
-      <ListGroup.Item
-       key={index}
-       className="d-flex justify-content-between align-items-center mb-2  rounded border"
-      >
-       <Container className="px-0">
-        {item.task}
-        <br />
-        {item.description}
-
-        <div className="d-flex align-items-center text-secondary">
-         {item.time}
-         <BsClock size={15} className="ms-2" />
-        </div>
-       </Container>
-
-       <Container className="d-flex w-auto px-0">
-        <Button
-         className="me-2"
-         variant="danger"
-         onClick={() => handleRemoveTask(item)}
-        >
-         <BsFillTrashFill size={16} />
-        </Button>
-
-        <Button variant="success" onClick={() => handleCheckTask(item)}>
-         <BsCheckCircleFill size={16} />
-        </Button>
-       </Container>
-      </ListGroup.Item>
-     ))}
     </ListGroup>
 
     <ListGroup>
-     {checkedTasks.length > 0 && (
-      <h2 className="fs-6">
-       <strong>Done</strong>
-      </h2>
+     <h2 className="fs-6">
+      <strong>Done</strong>
+     </h2>
+
+     {checkedTasks.length > 0 ? (
+      checkedTasks.map((item, index) => (
+       <ListGroup.Item
+        key={index}
+        className="d-flex justify-content-between align-items-center mb-2  rounded border"
+       >
+        <Container className="px-0">
+         {item.task}
+         <br />
+         {item.description}
+
+         <div className="d-flex align-items-center text-secondary">
+          {item.time}
+          <BsClock size={15} className="ms-2" />
+         </div>
+        </Container>
+
+        <Container className="d-flex w-auto px-0">
+         <Button
+          className="me-2"
+          variant="danger"
+          onClick={() => handleRemoveTask(item)}
+         >
+          <BsFillTrashFill size={16} />
+         </Button>
+         <Button
+          variant="btn btn-warning"
+          onClick={() => handleUndoCheckedTask(item)}
+         >
+          <LuUndo2 size={16} />
+         </Button>
+        </Container>
+       </ListGroup.Item>
+      ))
+     ) : (
+      <p className="centered-gray-text">You don't have any tasks done yet.</p>
      )}
-     {checkedTasks.map((item, index) => (
-      <ListGroup.Item
-       key={index}
-       className="d-flex justify-content-between align-items-center mb-2  rounded border"
-      >
-       <Container className="px-0">
-        {item.task}
-        <br />
-        {item.description}
-
-        <div className="d-flex align-items-center text-secondary">
-         {item.time}
-         <BsClock size={15} className="ms-2" />
-        </div>
-       </Container>
-
-       <Container className="d-flex w-auto px-0">
-        <Button
-         className="me-2"
-         variant="danger"
-         onClick={() => handleRemoveTask(item)}
-        >
-         <BsFillTrashFill size={16} />
-        </Button>
-        <Button
-         variant="btn btn-warning"
-         onClick={() => handleUndoCheckedTask(item)}
-        >
-         <LuUndo2 size={16} />
-        </Button>
-       </Container>
-      </ListGroup.Item>
-     ))}
     </ListGroup>
    </Container>
   </Container>

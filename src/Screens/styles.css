@@ -29,6 +29,11 @@ body {
  color: #aaa;
 }
 
+.centered-gray-text {
+ color: gray;
+ text-align: center;
+}
+
 button.btn-success {
  background-color: #28a745;
  color: white;
