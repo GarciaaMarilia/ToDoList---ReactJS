@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Container, FormControl, Button, ListGroup } from "react-bootstrap";
-import {
- BsPlusCircle,
- BsFillTrashFill,
- BsCheckCircleFill,
- BsClock,
-} from "react-icons/bs";
-import { LuUndo2 } from "react-icons/lu";
+
+import { BsPlusCircle } from "react-icons/bs";
+import { Container, FormControl, Button } from "react-bootstrap";
+
 import "./styles.css";
+import Taskslist from "./components/taskList";
+import TodayDate from "./components/todayDate";
+
+const STORAGE_KEY_TASKS = "tasks";
+const STORAGE_KEY_DATE = "lastResetDate";
+const STORAGE_KEY_CHECKED_TASKS = "checkedTasks";
 
 export default function ToDoList() {
  const [tasks, setTasks] = useState([]);
@@ -17,18 +19,28 @@ export default function ToDoList() {
  const [descriptionInput, setDescriptionInput] = useState("");
 
  useEffect(() => {
-  const savedTasks = JSON.parse(localStorage.getItem("tasks"));
-  const savedCheckedTasks = JSON.parse(localStorage.getItem("checkedTasks"));
-  if (savedTasks) setTasks(savedTasks);
-  if (savedCheckedTasks) setCheckedTasks(savedCheckedTasks);
+  const lastResetDate = localStorage.getItem(STORAGE_KEY_DATE);
+  const currentDate = new Date().toLocaleDateString();
+
+  if (lastResetDate !== currentDate) {
+   localStorage.clear();
+   localStorage.setItem(STORAGE_KEY_DATE, currentDate);
+  } else {
+   const savedTasks = JSON.parse(localStorage.getItem(STORAGE_KEY_TASKS));
+   const savedCheckedTasks = JSON.parse(
+    localStorage.getItem(STORAGE_KEY_CHECKED_TASKS)
+   );
+   if (savedTasks) setTasks(savedTasks);
+   if (savedCheckedTasks) setCheckedTasks(savedCheckedTasks);
+  }
  }, []);
 
  useEffect(() => {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+  localStorage.setItem(STORAGE_KEY_TASKS, JSON.stringify(tasks));
  }, [tasks]);
 
  useEffect(() => {
-  localStorage.setItem("checkedTasks", JSON.stringify(checkedTasks));
+  localStorage.setItem(STORAGE_KEY_CHECKED_TASKS, JSON.stringify(checkedTasks));
  }, [checkedTasks]);
 
  function handleTaskInput(event) {
@@ -83,7 +95,6 @@ export default function ToDoList() {
   setTasks(tasksAux);
   setCheckedTasks(updatedCheckedTasks);
  };
-
 
  function handleTimeFocus(event) {
   if (event.target.value === "") {
@@ -140,95 +151,23 @@ export default function ToDoList() {
      <BsPlusCircle className="ms-2" size={20} />
     </Button>
    </Container>
+
    <Container className="lists-container ">
-    <h2 className="mb-4 font-bold text-size-custom">
-     <strong>Today</strong>
-    </h2>
-    <ListGroup className="mb-4">
-     <h2 className="fs-6">
-      <strong>To Do</strong>
-     </h2>
+    <TodayDate />
 
-     {tasks.length > 0 ? (
-      tasks.map((item, index) => (
-       <ListGroup.Item
-        key={index}
-        className="d-flex justify-content-between align-items-center mb-2  rounded border"
-       >
-        <Container className="px-0">
-         {item.task}
-         <br />
-         {item.description}
+    <Taskslist
+     type="todo"
+     tasks={tasks}
+     handleCheckTask={handleCheckTask}
+     handleRemoveTask={handleRemoveTask}
+    />
 
-         <div className="d-flex align-items-center text-secondary">
-          {item.time}
-          <BsClock size={15} className="ms-2" />
-         </div>
-        </Container>
-
-        <Container className="d-flex w-auto px-0">
-         <Button
-          className="me-2"
-          variant="danger"
-          onClick={() => handleRemoveTask(item)}
-         >
-          <BsFillTrashFill size={16} />
-         </Button>
-
-         <Button variant="success" onClick={() => handleCheckTask(item)}>
-          <BsCheckCircleFill size={16} />
-         </Button>
-        </Container>
-       </ListGroup.Item>
-      ))
-     ) : (
-      <p className="centered-gray-text">You don't have any tasks to do yet.</p>
-     )}
-    </ListGroup>
-
-    <ListGroup>
-     <h2 className="fs-6">
-      <strong>Done</strong>
-     </h2>
-
-     {checkedTasks.length > 0 ? (
-      checkedTasks.map((item, index) => (
-       <ListGroup.Item
-        key={index}
-        className="d-flex justify-content-between align-items-center mb-2  rounded border"
-       >
-        <Container className="px-0">
-         {item.task}
-         <br />
-         {item.description}
-
-         <div className="d-flex align-items-center text-secondary">
-          {item.time}
-          <BsClock size={15} className="ms-2" />
-         </div>
-        </Container>
-
-        <Container className="d-flex w-auto px-0">
-         <Button
-          className="me-2"
-          variant="danger"
-          onClick={() => handleRemoveTask(item)}
-         >
-          <BsFillTrashFill size={16} />
-         </Button>
-         <Button
-          variant="btn btn-warning"
-          onClick={() => handleUndoCheckedTask(item)}
-         >
-          <LuUndo2 size={16} />
-         </Button>
-        </Container>
-       </ListGroup.Item>
-      ))
-     ) : (
-      <p className="centered-gray-text">You don't have any tasks done yet.</p>
-     )}
-    </ListGroup>
+    <Taskslist
+     type="done"
+     tasks={checkedTasks}
+     handleRemoveTask={handleRemoveTask}
+     handleUndoCheckedTask={handleUndoCheckedTask}
+    />
    </Container>
   </Container>
  );
