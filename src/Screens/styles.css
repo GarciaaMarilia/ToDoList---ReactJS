@@ -71,6 +71,16 @@ button.btn-success .ms-2 {
  margin-left: 0.5rem;
 }
 
+formControl:focus {
+ outline: none;
+ box-shadow: none;
+}
+
+formControl[type="time"]::placeholder {
+ color: gray;
+ opacity: 1; 
+}
+
 @media (max-width: 600px) {
  .custom-padding {
   padding: 20px;

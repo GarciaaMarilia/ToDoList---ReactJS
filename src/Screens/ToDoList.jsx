@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, FormControl, Button, ListGroup } from "react-bootstrap";
 import {
  BsPlusCircle,
@@ -7,15 +7,29 @@ import {
  BsClock,
 } from "react-icons/bs";
 import { LuUndo2 } from "react-icons/lu";
-
 import "./styles.css";
 
 export default function ToDoList() {
  const [tasks, setTasks] = useState([]);
  const [taskInput, setTaskInput] = useState("");
- const [descriptionInput, setDescriptionInput] = useState("");
- const [checkedTasks, setCheckedTasks] = useState([]);
  const [timeInput, setTimeInput] = useState("");
+ const [checkedTasks, setCheckedTasks] = useState([]);
+ const [descriptionInput, setDescriptionInput] = useState("");
+
+ useEffect(() => {
+  const savedTasks = JSON.parse(localStorage.getItem("tasks"));
+  const savedCheckedTasks = JSON.parse(localStorage.getItem("checkedTasks"));
+  if (savedTasks) setTasks(savedTasks);
+  if (savedCheckedTasks) setCheckedTasks(savedCheckedTasks);
+ }, []);
+
+ useEffect(() => {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+ }, [tasks]);
+
+ useEffect(() => {
+  localStorage.setItem("checkedTasks", JSON.stringify(checkedTasks));
+ }, [checkedTasks]);
 
  function handleTaskInput(event) {
   let inputTask = event.target.value;
@@ -70,6 +84,19 @@ export default function ToDoList() {
   setCheckedTasks(updatedCheckedTasks);
  };
 
+
+ function handleTimeFocus(event) {
+  if (event.target.value === "") {
+   event.target.type = "time";
+  }
+ }
+
+ function handleTimeBlur(event) {
+  if (event.target.value === "") {
+   event.target.type = "text";
+  }
+ }
+
  return (
   <Container className="full-width full-height custom-padding bg-white d-flex flex-column">
    <Container className="input-container py-4 d-flex align-items-center full-width">
@@ -94,11 +121,13 @@ export default function ToDoList() {
      onChange={handleDescriptionInput}
     />
     <FormControl
-     type="time"
+     type={timeInput ? "time" : "text"}
      aria-label="Time"
      value={timeInput}
      placeholder="Time"
      onChange={handleTimeInput}
+     onFocus={handleTimeFocus}
+     onBlur={handleTimeBlur}
      className="me-2  border-1"
      aria-describedby="basic-addon2"
     />
