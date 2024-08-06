@@ -1,18 +1,23 @@
 body {
  font-family: "Inter", sans-serif;
 }
+
 .full-width {
  max-width: 100%;
 }
+
 .full-height {
  min-height: 100vh;
 }
+
 .custom-padding {
  padding: 80px;
 }
+
 .text-size-custom {
  font-size: 1.5rem !important;
 }
+
 .input-container {
  display: flex;
  justify-content: space-between;
@@ -64,4 +69,10 @@ button.btn-danger {
 
 button.btn-success .ms-2 {
  margin-left: 0.5rem;
+}
+
+@media (max-width: 600px) {
+ .custom-padding {
+  padding: 20px;
+ }
 }
